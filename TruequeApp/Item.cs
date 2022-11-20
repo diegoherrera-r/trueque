@@ -25,13 +25,13 @@ namespace TruequeApp
         #endregion
 
         #region Methods
-        public Object Find()
+        public object Find(string product)
         {
             //TODO: Buscar y mostrar la fila de un articulo por su nombre en el documento
             return null;
         }
 
-        public bool Exists()
+        public bool Exists(string product)
         {
             //TODO: verificar si existe el objeto en el documento
             return false;
@@ -42,16 +42,16 @@ namespace TruequeApp
         {
             try
             {
-                WorkBook workbook = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
-                WorkSheet worksheet = workbook.GetWorkSheet("Articulos");
+                WorkBook wb = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
+                WorkSheet ws = wb.GetWorkSheet("Articulos");
 
-                int i = worksheet.Rows.Count() + 1;
-                worksheet["A" + i].Value = Utility.IDGenerator();
-                worksheet["B" + i].Value = product.ToString().ToLower();
-                worksheet["C" + i].Value = descr.ToString().ToLower();
-                worksheet["D" + i].Value = value;
-                worksheet["E" + i].Value = DateTime.Today;
-                worksheet.SaveAs(directory + @"\Data\DB_Articulos.xlsx");
+                int i = ws.Rows.Count() + 1;
+                ws["A" + i].Value = Utility.IDGenerator();
+                ws["B" + i].Value = product.ToString().ToLower();
+                ws["C" + i].Value = descr.ToString().ToLower();
+                ws["D" + i].Value = value;
+                ws["E" + i].Value = DateTime.Today;
+                ws.SaveAs(directory + @"\Data\DB_Articulos.xlsx");
             }
             catch (Exception ex)
             {
@@ -62,15 +62,15 @@ namespace TruequeApp
 
         public void Delete(int i)
         {
-            WorkBook workbook = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
-            WorkSheet worksheet = workbook.GetWorkSheet("Articulos");
+            WorkBook wb = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
+            WorkSheet ws = wb.GetWorkSheet("Articulos");
 
             if (i <= 0)
                 Console.WriteLine("Error, ingresar valor mayor a 0. Ninguna fila fue eliminada.");
             else
             {
-                worksheet.Rows[i].RemoveRow();
-                worksheet.SaveAs(directory + @"\Data\DB_Articulos.xlsx");
+                ws.Rows[i].RemoveRow();
+                ws.SaveAs(directory + @"\Data\DB_Articulos.xlsx");
             }
         }
         #endregion

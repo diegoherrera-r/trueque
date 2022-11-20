@@ -22,5 +22,11 @@ namespace TruequeApp
             string id = builder.ToString();
             return id;
         }
+
+        public static void KeyToContinue()
+        {
+            Console.WriteLine("\nPresiona cualquier tecla para continuar...");
+            Console.ReadLine();
+        }
     }
 }

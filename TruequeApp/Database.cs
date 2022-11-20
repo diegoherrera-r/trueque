@@ -17,14 +17,14 @@ namespace TruequeApp
         #endregion
 
         #region Methods
-        public Object CheckAllItemsValue()
+        public object CheckAllItemsValue()
         {
-            WorkBook workbook = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
-            WorkSheet worksheet = workbook.GetWorkSheet("Articulos");
+            WorkBook wb = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
+            WorkSheet ws = wb.GetWorkSheet("Articulos");
 
-            worksheet["F1"].Formula = "Sum(D:D)";
-            workbook.EvaluateAll();
-            var sumValue = worksheet["F1"].Value;
+            ws["F1"].Formula = "Sum(D:D)";
+            wb.EvaluateAll();
+            var sumValue = ws["F1"].Value;
 
             return sumValue;
         }
@@ -33,14 +33,14 @@ namespace TruequeApp
         {
             try
             {
-                WorkBook workbook = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
-                WorkSheet worksheet = workbook.GetWorkSheet("Articulos");
+                WorkBook wb = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
+                WorkSheet ws = wb.GetWorkSheet("Articulos");
 
-                for (int i = 0; i < worksheet.Rows.Count(); i++)
+                for (int i = 0; i < ws.Rows.Count(); i++)
                 {
-                    for (int j = 0; j < worksheet.Columns.Count(); j++)
+                    for (int j = 0; j < ws.Columns.Count(); j++)
                     {
-                        string value = worksheet.Rows[i].Columns[j].Value.ToString();
+                        string value = ws.Rows[i].Columns[j].Value.ToString();
                         Console.Write("|{0,-20}|", value);
                     }
                     Console.WriteLine();
@@ -69,14 +69,14 @@ namespace TruequeApp
             if (!Directory.Exists(directory + @"\Data"))
                 Directory.CreateDirectory(directory + @"\Data");
 
-            var workbook = WorkBook.Create(ExcelFileFormat.XLSX);
-            var sheet = workbook.CreateWorkSheet("Articulos");
+            var wb = WorkBook.Create(ExcelFileFormat.XLSX);
+            var sheet = wb.CreateWorkSheet("Articulos");
             sheet["A1"].Value = "ID";
             sheet["B1"].Value = "Producto";
             sheet["C1"].Value = "Descripcion";
             sheet["D1"].Value = "Valor_Aprox";
             sheet["E1"].Value = "Fecha_Publicacion";
-            workbook.SaveAs(directory + @"\Data\DB_Articulos.xlsx");
+            wb.SaveAs(directory + @"\Data\DB_Articulos.xlsx");
         }
         #endregion
     }
