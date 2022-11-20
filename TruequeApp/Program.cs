@@ -10,9 +10,11 @@ namespace TruequeApp
     {
         static void Main(string[] args)
         {
-            Database db = new Database();
-            db.ReadAll();
-            Console.Write("Suma total del precio referencial de los productos: " + db.CheckAllItemsValue());
+            Item item = new Item();
+            Database.ReadAll();
+            Console.Write("Buscar producto: ");
+            var product = Console.ReadLine();
+            item.Find(product);
             Console.ReadKey();
         }
     }

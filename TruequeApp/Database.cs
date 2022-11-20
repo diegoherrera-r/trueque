@@ -7,7 +7,7 @@ namespace TruequeApp
 {
     internal class Database
     {
-        private string directory = Directory.GetCurrentDirectory();
+        private static string directory = Directory.GetCurrentDirectory();
 
         #region Constructors
         public Database()
@@ -17,7 +17,7 @@ namespace TruequeApp
         #endregion
 
         #region Methods
-        public object CheckAllItemsValue()
+        public static object CheckAllItemsValue()
         {
             WorkBook wb = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
             WorkSheet ws = wb.GetWorkSheet("Articulos");
@@ -29,7 +29,7 @@ namespace TruequeApp
             return sumValue;
         }
 
-        public void ReadAll()
+        public static void ReadAll()
         {
             try
             {

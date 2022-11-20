@@ -16,6 +16,8 @@ namespace TruequeApp
         private string directory = Directory.GetCurrentDirectory();
 
         #region Constructors
+        public Item() { }
+
         public Item(string product, string descr, decimal value)
         {
             this.product = product;
@@ -25,15 +27,41 @@ namespace TruequeApp
         #endregion
 
         #region Methods
-        public object Find(string product)
+        public void Find(string p)
         {
-            //TODO: Buscar y mostrar la fila de un articulo por su nombre en el documento
-            return null;
+            try
+            {
+                if (Exists(p))
+                {
+                    //TODO: si objeto(s) existe(n) mostrar la fila en la que existe(n)
+                    
+                }
+                else
+                {
+                    Console.WriteLine("No se encuentra ningun producto");
+                }
+            }
+            catch (ArgumentNullException ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
-        public bool Exists(string product)
+        // verifica si existe (al menos) un objeto en el documento que califica el criterio
+        private bool Exists(string p)
         {
-            //TODO: verificar si existe el objeto en el documento
+            WorkBook wb = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
+            WorkSheet ws = wb.WorkSheets.First();
+            var pFormatted = p.ToLower().Trim();
+            var range = ws["B:B"];
+
+            foreach (var item in range)
+            {
+                if (item.ToString() == pFormatted)
+                {
+                    return true;
+                }
+            }
             return false;
         }
         
