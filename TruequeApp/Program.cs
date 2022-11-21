@@ -10,12 +10,7 @@ namespace TruequeApp
     {
         static void Main(string[] args)
         {
-            Item item = new Item();
-            Database.ReadAll();
-            Console.Write("Buscar producto: ");
-            var product = Console.ReadLine();
-            item.Find(product);
-            Console.ReadKey();
+            Menu.MainMenu();
         }
     }
 }

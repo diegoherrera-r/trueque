@@ -38,6 +38,8 @@ namespace TruequeApp
                 }
                 else
                 {
+                    //TODO: si no existe preguntar en consola si quiere dejar el producto almacenado (NO AQUI, preguntar en clase Menu)
+                    // aqui solo la lógica de almacenamiento del producto.
                     Console.WriteLine("No se encuentra ningun producto");
                 }
             }
