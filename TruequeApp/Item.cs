@@ -1,47 +1,50 @@
 ﻿using IronXL;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TruequeApp
 {
     internal class Item
     {
+        private string name;
         private string product;
         private string descr;
         private decimal value;
+        private string pDesired;
+        private string pDesired2;
+        private string pDesired3;
         private string directory = Directory.GetCurrentDirectory();
 
         #region Constructors
         public Item() { }
 
-        public Item(string product, string descr, decimal value)
+        public Item(string name, string product, string descr, decimal value, string pDesired, string pDesired2, string pDesired3)
         {
+            this.name = name;
             this.product = product;
             this.descr = descr;
             this.value = value;
+            this.pDesired = pDesired;
+            this.pDesired2 = pDesired2;
+            this.pDesired3 = pDesired3;
         }
         #endregion
 
         #region Methods
-        public void Find(string p)
+        private void Find(int rowIndex)
         {
             try
             {
-                if (Exists(p))
+                WorkBook wb = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
+                WorkSheet ws = wb.WorkSheets.First();
+                var x = 1;
+                for (int i = 0; i < ws.Columns.Count(); i++)
                 {
-                    //TODO: si objeto(s) existe(n) mostrar la fila en la que existe(n)
-                    
+                    string value = ws.Rows[rowIndex].Columns[i].Value.ToString();
+                    Console.Write("{0,-20}|", value);
                 }
-                else
-                {
-                    //TODO: si no existe preguntar en consola si quiere dejar el producto almacenado (NO AQUI, preguntar en clase Menu)
-                    // aqui solo la lógica de almacenamiento del producto.
-                    Console.WriteLine("No se encuentra ningun producto");
-                }
+                Console.WriteLine();
             }
             catch (ArgumentNullException ex)
             {
@@ -50,23 +53,29 @@ namespace TruequeApp
         }
 
         // verifica si existe (al menos) un objeto en el documento que califica el criterio
-        private bool Exists(string p)
+        public bool Exists()
         {
             WorkBook wb = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
             WorkSheet ws = wb.WorkSheets.First();
-            var pFormatted = p.ToLower().Trim();
-            var range = ws["B:B"];
+            var range = ws["C:C"];
+            var check = 0;
 
             foreach (var item in range)
             {
-                if (item.ToString() == pFormatted)
+                if (item.ToString() == pDesired || item.ToString() == pDesired2 || item.ToString() == pDesired3)
                 {
-                    return true;
+                    var rowIndex = item.RowIndex;
+                    Find(rowIndex);
+                    check++;
                 }
             }
-            return false;
+
+            if (check != 0)
+                return true;
+            else
+                return false;
         }
-        
+
         // añade un nuevo item debajo del último item en el documento
         public void Add()
         {
@@ -77,10 +86,14 @@ namespace TruequeApp
 
                 int i = ws.Rows.Count() + 1;
                 ws["A" + i].Value = Utility.IDGenerator();
-                ws["B" + i].Value = product.ToString().ToLower();
-                ws["C" + i].Value = descr.ToString().ToLower();
-                ws["D" + i].Value = value;
-                ws["E" + i].Value = DateTime.Today;
+                ws["B" + i].Value = name.ToString().ToLower();
+                ws["C" + i].Value = product.ToString().ToLower();
+                ws["D" + i].Value = descr.ToString().ToLower();
+                ws["E" + i].Value = value;
+                ws["F" + i].Value = pDesired.ToString().ToLower();
+                ws["G" + i].Value = pDesired2.ToString().ToLower();
+                ws["H" + i].Value = pDesired3.ToString().ToLower();
+                ws["I" + i].Value = DateTime.Now.ToString("dd/MM/yyyy");
                 ws.SaveAs(directory + @"\Data\DB_Articulos.xlsx");
             }
             catch (Exception ex)
@@ -90,17 +103,22 @@ namespace TruequeApp
             }
         }
 
-        public void Delete(int i)
+        public void Delete(string id)
         {
             WorkBook wb = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
             WorkSheet ws = wb.GetWorkSheet("Articulos");
 
-            if (i <= 0)
-                Console.WriteLine("Error, ingresar valor mayor a 0. Ninguna fila fue eliminada.");
-            else
+            var range = ws["A:A"];
+            
+            foreach (var item in range)
             {
-                ws.Rows[i].RemoveRow();
-                ws.SaveAs(directory + @"\Data\DB_Articulos.xlsx");
+                if (item.ToString() == id)
+                {
+                    var i = item.RowIndex;
+                    Log.WriteLog(name, product, value);
+                    ws.Rows[i].RemoveRow();
+                    ws.SaveAs(directory + @"\Data\DB_Articulos.xlsx");
+                }
             }
         }
         #endregion

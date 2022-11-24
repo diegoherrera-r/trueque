@@ -22,9 +22,9 @@ namespace TruequeApp
             WorkBook wb = WorkBook.Load(directory + @"\Data\DB_Articulos.xlsx");
             WorkSheet ws = wb.GetWorkSheet("Articulos");
 
-            ws["F1"].Formula = "Sum(D:D)";
+            ws["Z1"].Formula = "Sum(E:E)";
             wb.EvaluateAll();
-            var sumValue = ws["F1"].Value;
+            var sumValue = ws["Z1"].Value;
 
             return sumValue;
         }
@@ -41,14 +41,14 @@ namespace TruequeApp
                     for (int j = 0; j < ws.Columns.Count(); j++)
                     {
                         string value = ws.Rows[i].Columns[j].Value.ToString();
-                        Console.Write("|{0,-20}|", value);
+                        Console.Write("{0,-20}|", value);
                     }
                     Console.WriteLine();
                 }
             }
             catch (Exception ex)
             {
-                IOException ioE = new IOException("Unable to read. The file is being used by another process.", ex.InnerException);
+                IOException ioE = new IOException("No es posible leer el archivo. El archivo está siendo usado por otro proceso.", ex.InnerException);
                 throw ioE;
             }
         }
@@ -72,10 +72,14 @@ namespace TruequeApp
             var wb = WorkBook.Create(ExcelFileFormat.XLSX);
             var sheet = wb.CreateWorkSheet("Articulos");
             sheet["A1"].Value = "ID";
-            sheet["B1"].Value = "Producto";
-            sheet["C1"].Value = "Descripcion";
-            sheet["D1"].Value = "Valor_Aprox";
-            sheet["E1"].Value = "Fecha_Publicacion";
+            sheet["B1"].Value = "Nombre";
+            sheet["C1"].Value = "Producto";
+            sheet["D1"].Value = "Descripcion";
+            sheet["E1"].Value = "Valor_Aprox";
+            sheet["F1"].Value = "Deseo_1";
+            sheet["G1"].Value = "Deseo_2";
+            sheet["H1"].Value = "Deseo_3";
+            sheet["I1"].Value = "Fecha_Publicacion";
             wb.SaveAs(directory + @"\Data\DB_Articulos.xlsx");
         }
         #endregion

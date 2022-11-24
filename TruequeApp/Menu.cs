@@ -12,40 +12,87 @@ namespace TruequeApp
     {
         public static void MainMenu()
         {
-            Item item = new Item();
+            new Database();
             while (true)
             {
                 Console.Clear();
                 MenuList("1", "Intercambiar");
                 MenuList("2", "Mostrar productos");
-                MenuList("3", "Productos historicos");
-                MenuList("4", "Valorizacion de productos");
-                MenuList("5", "Salir");
+                MenuList("3", "Valorizacion de productos");
+                MenuList("4", "Salir");
+                MenuList("5", "añadir");
                 Console.Write("\nIr a: ");
 
                 string option = Console.ReadLine();
 
                 if (option == "1")
                 {
-                    /*TODO: El usuario entrega los datos del producto (nombre, descripcion y valor) guardando los valores.
-                     *      Luego se le pide escribir el nombre del producto que desea y se invoca al metodo Find() de la clase item para verificar 
-                     *      si existe alguna(s) fila(s) con ese nombre. Si existe se le retorna al usuario la fila o filas que correspondan y se le pregunta 
-                     *      por cual quiere intercambiarlo. Si el usuario opta por elegir uno se graba la transacción en el archivo log y se elimina 
-                     *      si quiere guardar el producto en el documento para un futuro intercambio; si la respuesta es "no" no se guarda el objeto y se 
-                     *      devuelve al menu.
-                    */
                     Console.Clear();
-                    Console.Write("Nombre del producto: ");
+                    Console.Write("Nombre: ");
+                    var name = Console.ReadLine();
+                    Console.Write("\nProducto a intercambiar: ");
                     var product = Console.ReadLine();
-                    Console.Write("\n Descripcion breve: ");
+                    Console.Write("\nDescripcion breve: ");
                     var descr = Console.ReadLine();
-                    Console.Write("\n Valor referencial: $");
-                    var value = Console.ReadLine();
+                    Console.Write("\nValor referencial: $");
+                    var value = decimal.Parse(Console.ReadLine());
 
-                    Console.Write("\n¿Por cual producto quiere intercambiarlo?: ");
-                    var desiredProduct = Console.ReadLine();
-                    //...
-                    
+                    Console.WriteLine("\nAhora ingrese los productos por los que desea intercambiar el producto registrado".Pastel("#8BC6FC"));
+
+                    Console.Write("\nProducto Deseado N°1: ");
+                    var pDesired = Console.ReadLine();
+                    Console.Write("\nProducto Deseado N°2: ");
+                    var pDesired2 = Console.ReadLine();
+                    Console.Write("\nProducto Deseado N°3: ");
+                    var pDesired3 = Console.ReadLine();
+                    Console.WriteLine();
+                    Item item = new Item(name, product, descr, value, pDesired, pDesired2, pDesired3);
+                    if (item.Exists())
+                    {
+                        Console.Write("\n¿Desea realizar un trueque con alguno de los productos? (y/n): ");
+                        var response = Console.ReadLine().ToLower().Trim();
+                        if (response == "y")
+                        {
+                            Console.Write("\nIngrese ID del producto seleccionado: ");
+                            var id = Console.ReadLine().Trim();
+                            item.Delete(id);
+                            Console.WriteLine("\nIntercambio exitoso.".Pastel("#009A17"));
+                            Utility.KeyToContinue();
+                        }
+                        else
+                        {
+                            Console.Write("\n¿Desea almacenar el producto en inventario para un futuro intercambio? (y/n): ");
+                            var response2 = Console.ReadLine().ToLower().Trim();
+                            if (response2 == "y")
+                            {
+                                item.Add();
+                                Console.WriteLine("\nProducto almacenado correctamente.".Pastel("#009A17"));
+                                Thread.Sleep(2000);
+                            }
+                            else
+                            {
+                                Console.WriteLine("\nVolviendo al menu...".Pastel("#ECE81A"));
+                                Thread.Sleep(2000);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("No existen productos actualmente que califiquen para el intercambio.".Pastel("#ECE81A"));
+                        Console.Write("\n¿Desea almacenar el producto en inventario para un futuro intercambio? (y/n): ");
+                        var response = Console.ReadLine().ToLower().Trim();
+                        if(response == "y")
+                        {
+                            item.Add();
+                            Console.WriteLine("\nProducto almacenado correctamente.".Pastel("#009A17"));
+                            Thread.Sleep(2000);
+                        }
+                        else
+                        {
+                            Console.WriteLine("\nVolviendo al menu...".Pastel("#ECE81A"));
+                            Thread.Sleep(2000);
+                        }
+                    }
                 }
                 else if (option == "2")
                 {
@@ -55,19 +102,35 @@ namespace TruequeApp
                 }
                 else if (option == "3")
                 {
-                    /*TODO: mostrar todas las filas del documento que tengan una fecha superior a 1 mes basado en la fecha en que fueron agregados al mismo.
-                     * Usar LinQ o similar.
-                     */
-                }
-                else if (option == "4")
-                {
                     Console.Clear();
                     Console.WriteLine("Valor referencial total en inventario: $" + Database.CheckAllItemsValue());
                     Utility.KeyToContinue();
                 }
-                else if (option == "5")
+                else if (option == "4")
                 {
                     Environment.Exit(1);
+                }
+                else if (option == "5")
+                {
+                    Console.Write("\nNombre: ");
+                    var name = Console.ReadLine();
+                    Console.Write("\nProducto: ");
+                    var product = Console.ReadLine();
+                    Console.Write("\nDescripcion: ");
+                    var descr = Console.ReadLine();
+                    Console.Write("\nValor referencial: $");
+                    var value = decimal.Parse(Console.ReadLine());
+
+                    Console.WriteLine("\nAhora ingrese los productos por los que desea intercambiar el producto registrado".Pastel("#8BC6FC"));
+
+                    Console.Write("\nProducto Deseado N°1: ");
+                    var pDesired = Console.ReadLine();
+                    Console.Write("\nProducto Deseado N°2: ");
+                    var pDesired2 = Console.ReadLine();
+                    Console.Write("\nProducto Deseado N°3: ");
+                    var pDesired3 = Console.ReadLine();
+                    Item i = new Item(name, product, descr, value, pDesired, pDesired2, pDesired3);
+                    i.Add();
                 }
                 else
                 {
