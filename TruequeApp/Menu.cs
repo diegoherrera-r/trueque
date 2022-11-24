@@ -20,7 +20,6 @@ namespace TruequeApp
                 MenuList("2", "Mostrar productos");
                 MenuList("3", "Valorizacion de productos");
                 MenuList("4", "Salir");
-                MenuList("5", "añadir");
                 Console.Write("\nIr a: ");
 
                 string option = Console.ReadLine();
@@ -109,28 +108,6 @@ namespace TruequeApp
                 else if (option == "4")
                 {
                     Environment.Exit(1);
-                }
-                else if (option == "5")
-                {
-                    Console.Write("\nNombre: ");
-                    var name = Console.ReadLine();
-                    Console.Write("\nProducto: ");
-                    var product = Console.ReadLine();
-                    Console.Write("\nDescripcion: ");
-                    var descr = Console.ReadLine();
-                    Console.Write("\nValor referencial: $");
-                    var value = decimal.Parse(Console.ReadLine());
-
-                    Console.WriteLine("\nAhora ingrese los productos por los que desea intercambiar el producto registrado".Pastel("#8BC6FC"));
-
-                    Console.Write("\nProducto Deseado N°1: ");
-                    var pDesired = Console.ReadLine();
-                    Console.Write("\nProducto Deseado N°2: ");
-                    var pDesired2 = Console.ReadLine();
-                    Console.Write("\nProducto Deseado N°3: ");
-                    var pDesired3 = Console.ReadLine();
-                    Item i = new Item(name, product, descr, value, pDesired, pDesired2, pDesired3);
-                    i.Add();
                 }
                 else
                 {
